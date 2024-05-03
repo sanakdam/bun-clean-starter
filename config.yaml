@@ -1,0 +1,65 @@
+app:
+  name: bun-clean-starter
+  host: 0.0.0.0
+  port: "3000"
+  key: ${API_KEY}
+  version: "1.0"
+  debugKey: ${DEBUG_KEY}
+  frontStoreUrl: ${FRONTSTORE_URL}
+  jwtKey: ${JWT_KEY}
+  clientTimeout: 10s
+  isShippingRateCacheEnabled: true
+  secretKey: ${SECRET_KEY}
+  callbackURL: ${CALLBACK_URL}
+database:
+  primary:
+    schema: postgresql
+    host: ${TRADE_DB_HOST_MASTER}
+    port: "5432"
+    username: ${TRADE_DB_USER_MASTER}
+    password: ${TRADE_DB_PASS_MASTER}
+    db: ${TRADE_DB_NAME}
+  slave:
+    schema: postgresql
+    host: ${TRADE_DB_HOST_SLAVE}
+    port: "5432"
+    username: ${TRADE_DB_USER_SLAVE}
+    password: ${TRADE_DB_PASS_SLAVE}
+    db: ${TRADE_DB_NAME}
+client:
+  shopCatalogue:
+    url: "http://127.0.0.1:3001"
+    key: ${API_KEY}
+  shopUser:
+    url: "http://127.0.0.1:3002"
+    key: ${API_KEY}
+  paymentGateway:
+    url: ${PAYMENT_GATEWAY_URL}
+  flashMobileSms:
+    url: ${FLASHMOBILE_URL}
+    key: ${FLASHMOBILE_KEY}
+    secret: ${FLASHMOBILE_SECRET}
+tpl:
+  grab:
+    url: ${GRAB_URL}
+    clientId: ${GRAB_CLIENT_ID}
+    clientSecret: ${GRAB_CLIENT_SECRET}
+    grantType: ${GRAB_GRANT_TYPE}
+    grabScope: ${GRAB_SCOPE}
+    path: ${GRAB_PATH}
+  sap:
+    url: ${SAP_URL}
+    key: ${SAP_KEY}
+    code: ${SAP_CUSTOMER_CODE}
+  jne:
+    url: ${JNE_URL}
+    key: ${JNE_KEY}
+    user: ${JNE_USERNAME}
+  sicepat:
+    url: ${SICEPAT_URL}
+    key: ${SICEPAT_KEY}
+jaeger:
+  host: ${JAEGER_HOST}
+  port: ${JAEGER_PORT}
+  serviceName: "shop-commerce-trade"
+  repo: "https://github.com/mnc-ecommerce/trade-shop-commerce"
