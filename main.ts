@@ -1,43 +1,44 @@
-import {serve} from "@hono/node-server"
-import {OpenAPIHono} from "@hono/zod-openapi"
-import {swaggerUI} from "@hono/swagger-ui"
+import {ExecutionContext, Hono, Env, Context} from "hono"
+import {cors} from "hono/cors"
+import setupApp from "@/internal/app/setup"
 import * as config from "@/config/config"
+import {webError} from "@/pkg/web/response"
 
-async function main(): Promise<void> {
-    try {
-        const err = await config.initConfig()
-        if (err !== null) {
-            
-        }
+function initServer(): Hono {
+    const app = new Hono()
 
-        const server = initServer()
+    app.use("*", cors())
 
-        server.doc("/doc", {
-            openapi: "3.0.0",
-            info: {
-                version: config.get().app.version,
-                title: config.get().app.name,
-            },
-        })
+    return app
+}
 
-        server.get("/ui", swaggerUI({ url: "/doc" }))
-    } catch (err: unknown) {
+type Server = {
+    fetch: (request: Request, Env?: (Env["Bindings"] | {}), executionCtx?: ExecutionContext) => (Response | Promise<Response>),
+    port: number
+}
 
+function main(): Server | undefined {
+    const err = config.initConfig()
+    if (err !== null) {
+        console.error(err)
+        return
+    }
+
+    const app = initServer()
+
+    setupApp(app)
+
+    app.get("*", function (ctx: Context): Response {
+        return webError(ctx, { code: 404, error: new Error("Route not found") })
+    })
+
+    const port = parseInt(config.get().app.port)
+    console.info(`Server is running on port ${port}`)
+
+    return {
+        fetch: app.fetch,
+        port,
     }
 }
 
-function initServer(): OpenAPIHono {
-    const server = new OpenAPIHono()
-
-    const port = parseInt(config.get().app.port)
-    console.log(`Server is running on port ${port}`)
-
-    serve({
-        fetch: server.fetch,
-        port,
-    })
-
-    return server
-}
-
-export default main
+export default main()

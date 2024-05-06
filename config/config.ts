@@ -24,7 +24,7 @@ type Config = {
 let config: Config
 let poolRead: Pool, poolWrite: Pool
 
-export async function initConfig(): Promise<Error | null> {
+export function initConfig(): Error | null {
     try {
         const reader = readFileSync('./config.yaml', 'utf8')
         config = load(reader) as Config

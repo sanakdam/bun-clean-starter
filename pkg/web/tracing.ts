@@ -1,9 +1,12 @@
 import * as config from "@/config/config"
+import {Context} from "hono";
 
 export enum TracingType {
-    Response = 'Response',
-    Error = 'Error',
-    Request = 'Request',
+    Start = "Start",
+    Response = "Response",
+    Result = "Result",
+    Error = "Error",
+    Request = "Request",
 }
 
 type Log = {
@@ -12,25 +15,26 @@ type Log = {
     value: string
 }
 
-class Tracing {
+export class Tracing {
     name: string
     logs: Log[] = []
 
     constructor(name: string) {
-        console.debug(name)
+        console.debug(TracingType.Start, name)
         this.name = name
     }
 
     addEvent(type: TracingType, log: any): Tracing {
         switch (type) {
             case TracingType.Request:
-                console.warn(this.name, JSON.stringify(log))
+                console.warn(type, this.name, JSON.stringify(log))
                 break
+            case TracingType.Result:
             case TracingType.Response:
-                console.info(this.name, JSON.stringify(log))
+                console.info(type, this.name, JSON.stringify(log))
                 break
             default:
-                console.error(this.name, JSON.stringify(log))
+                console.error(type, this.name, JSON.stringify(log))
         }
 
         this.logs.push({
@@ -42,13 +46,14 @@ class Tracing {
     }
 }
 
-export function start(name: string): Tracing | null {
+export function tracingStart(ctx: Context, name: string): { ctx: Context, span: Tracing | null } {
     if (config.get().app.debug) {
-        console.debug(name)
-        return new Tracing(name)
+        const span = new Tracing(name)
+        ctx.set("trace", span)
+        return { ctx, span }
     }
 
-    return null
+    return { ctx, span: null }
 }
 
 export function logRequest(span: Tracing | null, log: any): Tracing | null {
@@ -61,6 +66,12 @@ export function logResponse(span: Tracing | null, log: any): Tracing | null {
     if (span == null) return null
 
     return span.addEvent(TracingType.Response, log)
+}
+
+export function logResult(span: Tracing | null, log: any): Tracing | null {
+    if (span == null) return null
+
+    return span.addEvent(TracingType.Result, log)
 }
 
 export function logError(span: Tracing | null, log: any): Tracing | null {
