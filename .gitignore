@@ -181,4 +181,4 @@ dist
 docs/
 
 # Error folder
-pkg/error_logs/*
+errors/*
