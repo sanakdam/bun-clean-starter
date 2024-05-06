@@ -180,5 +180,6 @@ dist
 # Swagger folder config
 docs/
 
-# Error folder
+# Error Logs folder
 errors/*
+!errors/.gitkeep
