@@ -1,4 +1,3 @@
-import {Context} from "hono"
 import {dbRead, dbWrite} from "@/config/config"
 import {Pool} from "pg"
 
