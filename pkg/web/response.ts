@@ -1,4 +1,4 @@
-import {Context} from "hono";
+import {Context} from "hono"
 import {StatusCode} from "hono/utils/http-status"
 import {parseError} from "@/pkg/helpers/error"
 
