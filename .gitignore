@@ -173,4 +173,12 @@ dist
 
 # Finder (MacOS) folder config
 .DS_Store
+
+# Finder (VSCode) folder config
 .vscode/
+
+# Swagger folder config
+docs/
+
+# Error folder
+pkg/error_logs/*

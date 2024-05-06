@@ -4,12 +4,19 @@
   "type": "module",
   "devDependencies": {
     "@types/bun": "latest",
+    "@types/js-yaml": "^4.0.9",
     "@types/pg": "^8.11.5"
   },
   "peerDependencies": {
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "pg": "^8.11.5"
+    "@hono/node-server": "^1.11.1",
+    "@hono/swagger-ui": "^0.2.2",
+    "@hono/zod-openapi": "^0.11.0",
+    "hono": "^4.2.9",
+    "js-yaml": "^4.1.0",
+    "pg": "^8.11.5",
+    "zod": "^3.23.6"
   }
 }
